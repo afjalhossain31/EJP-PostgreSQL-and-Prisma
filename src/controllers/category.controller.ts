@@ -42,7 +42,7 @@ export const getCategoryById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const category = await prisma.category.findUnique({
-      where: { id, isDeleted: false },
+      where: { id: String(id), isDeleted: false },
       include: { products: true } // এই ক্যাটাগরির আন্ডারে কী কী প্রোডাক্ট আছে তাও দেখাবে
     });
 
@@ -68,7 +68,7 @@ export const updateCategory = async (req: Request, res: Response) => {
     const { name } = req.body;
 
     const updatedCategory = await prisma.category.update({
-      where: { id },
+      where: { id: String(id) },
       data: { name }
     });
 
@@ -89,7 +89,7 @@ export const deleteCategory = async (req: Request, res: Response) => {
 
     // Soft Delete: ডাটাবেস থেকে একেবারে না মুছে শুধু isDeleted কে true করে দেওয়া
     await prisma.category.update({
-      where: { id },
+     where: { id: String(id) },
       data: { isDeleted: true }
     });
 
