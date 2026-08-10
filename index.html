@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aroyana - Admin Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="container mx-auto p-6 max-w-4xl">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Aroyana E-Commerce Dashboard</h1>
+
+        <!-- Add Product Form Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Add New Product</h2>
+            <form id="productForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <input type="text" id="name" placeholder="Product Name" required class="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <input type="number" id="price" placeholder="Price" required class="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <input type="text" id="categoryId" placeholder="Category ID" required class="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <button type="submit" class="md:col-span-3 bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">Add Product</button>
+            </form>
+        </div>
+
+        <!-- Product List Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Product List</h2>
+            <div id="productList" class="space-y-3">
+                <!-- Products will be loaded here dynamically -->
+                <p class="text-gray-500">Loading products...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        // ব্যাকএন্ডের বেস ইউআরএল (লোকাল সার্ভার)
+        const API_URL = 'http://localhost:5000/api';
+
+        // ১. Fetch and Display Products
+        async function fetchProducts() {
+            try {
+                const response = await fetch(`${API_URL}/products`);
+                const result = await response.json();
+                
+                const productList = document.getElementById('productList');
+                productList.innerHTML = '';
+
+                if (result.data && result.data.length > 0) {
+                    result.data.forEach(product => {
+                        const div = document.createElement('div');
+                        div.className = 'flex justify-between items-center border p-3 rounded bg-gray-50';
+                        div.innerHTML = `
+                            <div>
+                                <h3 class="font-bold text-gray-800">${product.name}</h3>
+                                <p class="text-sm text-gray-600">Price: $${product.price}</p>
+                            </div>
+                            <button onclick="deleteProduct('${product.id}')" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition">Delete</button>
+                        `;
+                        productList.appendChild(div);
+                    });
+                } else {
+                    productList.innerHTML = '<p class="text-gray-500">No products found.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                document.getElementById('productList').innerHTML = '<p class="text-red-500">Failed to load products from backend.</p>';
+            }
+        }
+
+        // ২. Add Product Form Handler
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const categoryId = document.getElementById('categoryId').value;
+
+            try {
+                const response = await fetch(`${API_URL}/products`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, price, description: "Test description", categoryId })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Product added successfully!');
+                    document.getElementById('productForm').reset();
+                    fetchProducts(); // রিফ্রেশ লিস্ট
+                } else {
+                    alert('Failed to add product');
+                }
+            } catch (error) {
+                console.error('Error adding product:', error);
+            }
+        });
+
+        // ৩. Delete Product Handler
+        async function deleteProduct(id) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/products/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    fetchProducts(); // রিফ্রেশ লিস্ট
+                } else {
+                    alert('Failed to delete');
+                }
+            } catch (error) {
+                console.error('Error deleting product:', error);
+            }
+        }
+
+        // পেজ লোড হলেই প্রোডাক্টগুলো ফেচ করবে
+        fetchProducts();
+    </script>
+</body>
+</html>
