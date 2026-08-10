@@ -29,5 +29,55 @@ model User {
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
 
+  // Relations
+  reviews   Review[] // একজন ইউজারের অনেকগুলো রিভিউ থাকতে পারে
+
   @@map("users")
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  isDeleted Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relations
+  products  Product[] // একটি ক্যাটাগরিতে অনেকগুলো প্রোডাক্ট থাকতে পারে
+
+  @@map("categories")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  price       Float
+  description String?  // Optional field
+  categoryId  String
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  category    Category @relation(fields: [categoryId], references: [id])
+  reviews     Review[] // একটি প্রোডাক্টের অনেকগুলো রিভিউ থাকতে পারে
+
+  @@map("products")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int
+  comment   String
+  userId    String
+  productId String
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@map("reviews")
 }
