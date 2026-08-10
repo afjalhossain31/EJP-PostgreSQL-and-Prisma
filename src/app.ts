@@ -2,12 +2,15 @@ import express from 'express';
 import type { Application, Request, Response } from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes.js'; // রাউটটি ইমপোর্ট করা হলো
+import categoryRoutes from './routes/category.routes.js';
+
 
 const app: Application = express();
 
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use('/api/categories', categoryRoutes); 
 
 // Health Check
 app.get('/', (req: Request, res: Response) => {
@@ -18,7 +21,6 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
-// Mount Routes (আমাদের Auth API এর মেইন লিঙ্ক)
 app.use('/api/auth', authRoutes);
 
 export default app;
