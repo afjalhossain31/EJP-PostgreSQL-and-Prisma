@@ -1,403 +1,694 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>E-Commerce — Portal</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0E1116;
-    --panel:#161A22;
-    --panel-2:#1D222C;
-    --line:#262C38;
-    --text:#E7EAF0;
-    --muted:#8A93A6;
-    --accent:#2FD9C4;
-    --accent-dim:#1A6E63;
-    --warn:#FF6B6B;
-    --gold:#F0B429;
-    --radius:10px;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0; background:var(--bg); color:var(--text);
-    font-family:'Inter',sans-serif; min-height:100vh;
-  }
-  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
-  code, .mono{font-family:'JetBrains Mono',monospace;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce — Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0E1116;
+            --panel: #161A22;
+            --panel-2: #1D222C;
+            --line: #262C38;
+            --text: #E7EAF0;
+            --muted: #8A93A6;
+            --accent: #2FD9C4;
+            --accent-dim: #1A6E63;
+            --warn: #FF6B6B;
+            --gold: #F0B429;
+            --radius: 10px;
+        }
 
-  .shell{display:flex; min-height:100vh;}
+        * {
+            box-sizing: border-box;
+        }
 
-  /* Sidebar */
-  .sidebar{
-    width:220px; background:var(--panel); border-right:1px solid var(--line);
-    padding:24px 16px; display:flex; flex-direction:column; gap:24px; flex-shrink:0;
-  }
-  .brand{display:flex; align-items:center; gap:10px;}
-  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent); box-shadow:0 0 0 4px rgba(47,217,196,.15);}
-  .brand span{font-weight:700; font-size:18px; letter-spacing:.2px;}
-  nav{display:flex; flex-direction:column; gap:4px;}
-  .navbtn{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:10px 12px; border-radius:8px; color:var(--muted);
-    cursor:pointer; font-size:14px; font-weight:500; user-select:none;
-    border:1px solid transparent;
-  }
-  .navbtn:hover{color:var(--text); background:var(--panel-2);}
-  .navbtn.active{color:var(--accent); background:rgba(47,217,196,.08); border-color:var(--accent-dim);}
-  .navbtn .count{
-    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted);
-    background:var(--panel-2); padding:1px 7px; border-radius:20px;
-  }
-  .navbtn.active .count{color:var(--accent);}
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
 
-  .conn{margin-top:auto; padding-top:16px; border-top:1px solid var(--line);}
-  .conn .row{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted);}
-  .pulse{width:8px;height:8px;border-radius:50%; background:var(--warn); flex-shrink:0;}
-  .pulse.ok{background:var(--accent); animation:breathe 2s ease-in-out infinite;}
-  @keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(47,217,196,.5);} 50%{box-shadow:0 0 0 5px rgba(47,217,196,0);}}
-  .conn input{
-    width:100%; margin-top:8px; background:var(--panel-2); border:1px solid var(--line);
-    color:var(--text); font-size:11px; padding:6px 8px; border-radius:6px; font-family:'JetBrains Mono',monospace;
-  }
+        h1,
+        h2,
+        h3,
+        .display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
 
-  /* Main */
-  main{flex:1; padding:32px 40px; max-width:980px;}
-  .head{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;}
-  .head h1{font-size:26px; margin:0 0 4px;}
-  .head p{margin:0; color:var(--muted); font-size:13px;}
-  .token-pill{
-    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--gold);
-    background:rgba(240,180,41,.08); border:1px solid rgba(240,180,41,.3);
-    padding:5px 10px; border-radius:20px;
-  }
+        code,
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
 
-  .panel{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:20px; margin-bottom:20px;}
-  .panel h2{font-size:14px; margin:0 0 14px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; font-weight:600;}
+        .shell {
+            display: flex;
+            min-height: 100vh;
+        }
 
-  form.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px;}
-  input, select, textarea{
-    background:var(--panel-2); border:1px solid var(--line); color:var(--text);
-    padding:9px 11px; border-radius:8px; font-size:13px; font-family:'Inter',sans-serif;
-    width:100%;
-  }
-  input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent);}
-  button{
-    cursor:pointer; border:none; border-radius:8px; font-family:'Inter',sans-serif;
-    font-weight:600; font-size:13px; padding:9px 16px; transition:opacity .15s;
-  }
-  button:hover{opacity:.85;}
-  .btn-primary{background:var(--accent); color:#04211D; grid-column:1/-1;}
-  .btn-danger{background:transparent; border:1px solid var(--warn); color:var(--warn); padding:6px 12px; font-size:12px;}
-  .btn-ghost{background:transparent; border:1px solid var(--line); color:var(--muted); padding:6px 12px; font-size:12px;}
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: var(--panel);
+            border-right: 1px solid var(--line);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            flex-shrink: 0;
+        }
 
-  table{width:100%; border-collapse:collapse; font-size:13px;}
-  th{text-align:left; color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.4px; padding:8px 10px; border-bottom:1px solid var(--line);}
-  td{padding:10px; border-bottom:1px solid var(--line); vertical-align:middle;}
-  tr:last-child td{border-bottom:none;}
-  .id{color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:11px;}
-  .empty{color:var(--muted); font-size:13px; padding:20px 0; text-align:center;}
-  .stars{color:var(--gold); letter-spacing:1px;}
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-  .tabpage{display:none;}
-  .tabpage.active{display:block;}
-</style>
+        .brand .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 4px rgba(47, 217, 196, .15);
+        }
+
+        .brand span {
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: .2px;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .navbtn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            user-select: none;
+            border: 1px solid transparent;
+        }
+
+        .navbtn:hover {
+            color: var(--text);
+            background: var(--panel-2);
+        }
+
+        .navbtn.active {
+            color: var(--accent);
+            background: rgba(47, 217, 196, .08);
+            border-color: var(--accent-dim);
+        }
+
+        .navbtn .count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            background: var(--panel-2);
+            padding: 1px 7px;
+            border-radius: 20px;
+        }
+
+        .navbtn.active .count {
+            color: var(--accent);
+        }
+
+        .conn {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid var(--line);
+        }
+
+        .conn .row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--warn);
+            flex-shrink: 0;
+        }
+
+        .pulse.ok {
+            background: var(--accent);
+            animation: breathe 2s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(47, 217, 196, .5);
+            }
+
+            50% {
+                box-shadow: 0 0 0 5px rgba(47, 217, 196, 0);
+            }
+        }
+
+        .conn input {
+            width: 100%;
+            margin-top: 8px;
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            color: var(--text);
+            font-size: 11px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Main */
+        main {
+            flex: 1;
+            padding: 32px 40px;
+            max-width: 980px;
+        }
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 24px;
+        }
+
+        .head h1 {
+            font-size: 26px;
+            margin: 0 0 4px;
+        }
+
+        .head p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .token-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--gold);
+            background: rgba(240, 180, 41, .08);
+            border: 1px solid rgba(240, 180, 41, .3);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .panel h2 {
+            font-size: 14px;
+            margin: 0 0 14px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            font-weight: 600;
+        }
+
+        form.grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        input,
+        select,
+        textarea {
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            color: var(--text);
+            padding: 9px 11px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 9px 16px;
+            transition: opacity .15s;
+        }
+
+        button:hover {
+            opacity: .85;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #04211D;
+            grid-column: 1/-1;
+        }
+
+        .btn-danger {
+            background: transparent;
+            border: 1px solid var(--warn);
+            color: var(--warn);
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--muted);
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            text-align: left;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .id {
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        .empty {
+            color: var(--muted);
+            font-size: 13px;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .stars {
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+
+        .tabpage {
+            display: none;
+        }
+
+        .tabpage.active {
+            display: block;
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="shell">
-  <aside class="sidebar">
-    <div class="brand"><div class="dot"></div><span>Afrizen - Portal</span></div>
-    <nav id="navList">
-      <div class="navbtn active" data-tab="products">Products <span class="count" id="cnt-products">0</span></div>
-      <div class="navbtn" data-tab="categories">Categories <span class="count" id="cnt-categories">0</span></div>
-      <div class="navbtn" data-tab="reviews">Reviews <span class="count" id="cnt-reviews">0</span></div>
-      <div class="navbtn" data-tab="users">Users <span class="count" id="cnt-users">0</span></div>
-      <div class="navbtn" data-tab="auth">Auth</div>
-    </nav>
-    <div class="conn">
-      <div class="row"><div class="pulse" id="connDot"></div><span id="connLabel">checking…</span></div>
-      <input id="apiBase" value="http://localhost:5000/api" spellcheck="false">
+    <div class="shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="dot"></div><span>Afrizen - Portal</span>
+            </div>
+            <nav id="navList">
+                <div class="navbtn active" data-tab="products">Products <span class="count" id="cnt-products">0</span>
+                </div>
+                <div class="navbtn" data-tab="categories">Categories <span class="count" id="cnt-categories">0</span>
+                </div>
+                <div class="navbtn" data-tab="reviews">Reviews <span class="count" id="cnt-reviews">0</span></div>
+                <div class="navbtn" data-tab="users">Users <span class="count" id="cnt-users">0</span></div>
+                <div class="navbtn" data-tab="auth">Auth</div>
+            </nav>
+            <div class="conn">
+                <div class="row">
+                    <div class="pulse" id="connDot"></div><span id="connLabel">checking…</span>
+                </div>
+                <!-- <input id="apiBase" value="https://ejp-postgre-sql-and-prisma.vercel.app/api" spellcheck="false"> -->
+                <input id="apiBase" value="http://localhost:5000/api" spellcheck="false">
+
+            </div>
+        </aside>
+
+        <main>
+            <div class="head">
+                <div>
+                    <h1 id="pageTitle" class="display">Products</h1>
+                    <p id="pageSub">Everything on the shelf, live from the DB.</p>
+                </div>
+                <div class="token-pill" id="tokenPill">no token set</div>
+            </div>
+
+            <!-- PRODUCTS -->
+            <section class="tabpage active" id="tab-products">
+                <div class="panel">
+                    <h2>Add product</h2>
+                    <form class="grid" id="productForm">
+                        <input type="text" id="p-name" placeholder="Name" required>
+                        <input type="number" id="p-price" placeholder="Price" step="0.01" required>
+                        <select id="p-category" required></select>
+                        <input type="text" id="p-desc" placeholder="Description" style="grid-column:1/-1">
+                        <button type="submit" class="btn-primary">Add product</button>
+                    </form>
+                </div>
+                <div class="panel">
+                    <h2>All products</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>ID</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="productRows"></tbody>
+                    </table>
+                    <div class="empty" id="productEmpty" style="display:none">No products yet. Add one above.</div>
+                </div>
+            </section>
+
+            <!-- CATEGORIES -->
+            <section class="tabpage" id="tab-categories">
+                <div class="panel">
+                    <h2>Add category</h2>
+                    <form class="grid" id="categoryForm">
+                        <input type="text" id="c-name" placeholder="Category name" required>
+                        <button type="submit" class="btn-primary">Add category</button>
+                    </form>
+                </div>
+                <div class="panel">
+                    <h2>All categories</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>ID</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoryRows"></tbody>
+                    </table>
+                    <div class="empty" id="categoryEmpty" style="display:none">No categories yet.</div>
+                </div>
+            </section>
+
+            <!-- REVIEWS -->
+            <section class="tabpage" id="tab-reviews">
+                <div class="panel">
+                    <h2>All reviews</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Rating</th>
+                                <th>Comment</th>
+                                <th>ID</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="reviewRows"></tbody>
+                    </table>
+                    <div class="empty" id="reviewEmpty" style="display:none">No reviews yet.</div>
+                </div>
+            </section>
+
+            <!-- USERS -->
+            <section class="tabpage" id="tab-users">
+                <div class="panel">
+                    <h2>All users</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>ID</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="userRows"></tbody>
+                    </table>
+                    <div class="empty" id="userEmpty" style="display:none">No users yet.</div>
+                </div>
+            </section>
+
+            <!-- AUTH -->
+            <section class="tabpage" id="tab-auth">
+                <div class="panel" style="max-width:360px">
+                    <h2>Login</h2>
+                    <form class="grid" id="loginForm">
+                        <input type="email" id="a-email" placeholder="Email" style="grid-column:1/-1" required>
+                        <input type="password" id="a-password" placeholder="Password" style="grid-column:1/-1" required>
+                        <button type="submit" class="btn-primary">Log in</button>
+                    </form>
+                    <p style="color:var(--muted); font-size:12px; margin-top:10px">
+                        Token from <span class="mono">POST /auth/login</span> is attached to every request after this.
+                    </p>
+                </div>
+            </section>
+        </main>
     </div>
-  </aside>
 
-  <main>
-    <div class="head">
-      <div>
-        <h1 id="pageTitle" class="display">Products</h1>
-        <p id="pageSub">Everything on the shelf, live from the DB.</p>
-      </div>
-      <div class="token-pill" id="tokenPill">no token set</div>
-    </div>
+    <script>
+        let API = document.getElementById('apiBase').value;
+        let TOKEN = '';
 
-    <!-- PRODUCTS -->
-    <section class="tabpage active" id="tab-products">
-      <div class="panel">
-        <h2>Add product</h2>
-        <form class="grid" id="productForm">
-          <input type="text" id="p-name" placeholder="Name" required>
-          <input type="number" id="p-price" placeholder="Price" step="0.01" required>
-          <select id="p-category" required></select>
-          <input type="text" id="p-desc" placeholder="Description" style="grid-column:1/-1">
-          <button type="submit" class="btn-primary">Add product</button>
-        </form>
-      </div>
-      <div class="panel">
-        <h2>All products</h2>
-        <table><thead><tr><th>Name</th><th>Price</th><th>Category</th><th>ID</th><th></th></tr></thead>
-        <tbody id="productRows"></tbody></table>
-        <div class="empty" id="productEmpty" style="display:none">No products yet. Add one above.</div>
-      </div>
-    </section>
+        document.getElementById('apiBase').addEventListener('change', e => { API = e.target.value; checkConn(); loadAll(); });
 
-    <!-- CATEGORIES -->
-    <section class="tabpage" id="tab-categories">
-      <div class="panel">
-        <h2>Add category</h2>
-        <form class="grid" id="categoryForm">
-          <input type="text" id="c-name" placeholder="Category name" required>
-          <button type="submit" class="btn-primary">Add category</button>
-        </form>
-      </div>
-      <div class="panel">
-        <h2>All categories</h2>
-        <table><thead><tr><th>Name</th><th>ID</th><th></th></tr></thead>
-        <tbody id="categoryRows"></tbody></table>
-        <div class="empty" id="categoryEmpty" style="display:none">No categories yet.</div>
-      </div>
-    </section>
+        // ---- tab switching ----
+        const titles = {
+            products: ['Products', 'Everything on the shelf, live from the DB.'],
+            categories: ['Categories', 'How products are grouped.'],
+            reviews: ['Reviews', 'What customers are saying.'],
+            users: ['Users', 'Everyone with an account.'],
+            auth: ['Auth', 'Get a token, unlock write access.']
+        };
+        document.querySelectorAll('.navbtn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.navbtn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tabpage').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                const tab = btn.dataset.tab;
+                document.getElementById('tab-' + tab).classList.add('active');
+                document.getElementById('pageTitle').textContent = titles[tab][0];
+                document.getElementById('pageSub').textContent = titles[tab][1];
+            });
+        });
 
-    <!-- REVIEWS -->
-    <section class="tabpage" id="tab-reviews">
-      <div class="panel">
-        <h2>All reviews</h2>
-        <table><thead><tr><th>Product</th><th>Rating</th><th>Comment</th><th>ID</th><th></th></tr></thead>
-        <tbody id="reviewRows"></tbody></table>
-        <div class="empty" id="reviewEmpty" style="display:none">No reviews yet.</div>
-      </div>
-    </section>
+        function authHeaders(json = true) {
+            const h = {};
+            if (json) h['Content-Type'] = 'application/json';
+            if (TOKEN) h['Authorization'] = 'Bearer ' + TOKEN;
+            return h;
+        }
 
-    <!-- USERS -->
-    <section class="tabpage" id="tab-users">
-      <div class="panel">
-        <h2>All users</h2>
-        <table><thead><tr><th>Name</th><th>Email</th><th>ID</th><th></th></tr></thead>
-        <tbody id="userRows"></tbody></table>
-        <div class="empty" id="userEmpty" style="display:none">No users yet.</div>
-      </div>
-    </section>
+        async function checkConn() {
+            const dot = document.getElementById('connDot');
+            const label = document.getElementById('connLabel');
+            try {
+                const res = await fetch(API + '/products');
+                if (res.ok || res.status < 500) { dot.classList.add('ok'); label.textContent = API.replace('http://', ''); }
+                else throw new Error();
+            } catch (e) { dot.classList.remove('ok'); label.textContent = 'unreachable'; }
+        }
 
-    <!-- AUTH -->
-    <section class="tabpage" id="tab-auth">
-      <div class="panel" style="max-width:360px">
-        <h2>Login</h2>
-        <form class="grid" id="loginForm">
-          <input type="email" id="a-email" placeholder="Email" style="grid-column:1/-1" required>
-          <input type="password" id="a-password" placeholder="Password" style="grid-column:1/-1" required>
-          <button type="submit" class="btn-primary">Log in</button>
-        </form>
-        <p style="color:var(--muted); font-size:12px; margin-top:10px">
-          Token from <span class="mono">POST /auth/login</span> is attached to every request after this.
-        </p>
-      </div>
-    </section>
-  </main>
-</div>
-
-<script>
-let API = document.getElementById('apiBase').value;
-let TOKEN = '';
-
-document.getElementById('apiBase').addEventListener('change', e => { API = e.target.value; checkConn(); loadAll(); });
-
-// ---- tab switching ----
-const titles = {
-  products:['Products','Everything on the shelf, live from the DB.'],
-  categories:['Categories','How products are grouped.'],
-  reviews:['Reviews','What customers are saying.'],
-  users:['Users','Everyone with an account.'],
-  auth:['Auth','Get a token, unlock write access.']
-};
-document.querySelectorAll('.navbtn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tabpage').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    const tab = btn.dataset.tab;
-    document.getElementById('tab-'+tab).classList.add('active');
-    document.getElementById('pageTitle').textContent = titles[tab][0];
-    document.getElementById('pageSub').textContent = titles[tab][1];
-  });
-});
-
-function authHeaders(json=true){
-  const h = {};
-  if(json) h['Content-Type']='application/json';
-  if(TOKEN) h['Authorization']='Bearer '+TOKEN;
-  return h;
-}
-
-async function checkConn(){
-  const dot = document.getElementById('connDot');
-  const label = document.getElementById('connLabel');
-  try{
-    const res = await fetch(API+'/products');
-    if(res.ok || res.status < 500){ dot.classList.add('ok'); label.textContent = API.replace('http://',''); }
-    else throw new Error();
-  }catch(e){ dot.classList.remove('ok'); label.textContent = 'unreachable'; }
-}
-
-// ---- PRODUCTS ----
-async function loadProducts(){
-  try{
-    const res = await fetch(API+'/products');
-    const json = await res.json();
-    const list = json.data || json || [];
-    document.getElementById('cnt-products').textContent = list.length;
-    const rows = document.getElementById('productRows');
-    const empty = document.getElementById('productEmpty');
-    rows.innerHTML='';
-    empty.style.display = list.length ? 'none' : 'block';
-    list.forEach(p=>{
-      const catName = p.category?.name || p.categoryId || '—';
-      rows.innerHTML += `<tr>
+        // ---- PRODUCTS ----
+        async function loadProducts() {
+            try {
+                const res = await fetch(API + '/products');
+                const json = await res.json();
+                const list = json.data || json || [];
+                document.getElementById('cnt-products').textContent = list.length;
+                const rows = document.getElementById('productRows');
+                const empty = document.getElementById('productEmpty');
+                rows.innerHTML = '';
+                empty.style.display = list.length ? 'none' : 'block';
+                list.forEach(p => {
+                    const catName = p.category?.name || p.categoryId || '—';
+                    rows.innerHTML += `<tr>
         <td>${p.name}</td>
         <td class="mono">$${p.price}</td>
         <td>${catName}</td>
         <td class="id">${p.id}</td>
         <td><button class="btn-danger" onclick="deleteItem('products','${p.id}',loadProducts)">Delete</button></td>
       </tr>`;
-    });
-  }catch(e){ document.getElementById('productEmpty').style.display='block'; document.getElementById('productEmpty').textContent='Failed to load — is the backend running?'; }
-}
+                });
+            } catch (e) { document.getElementById('productEmpty').style.display = 'block'; document.getElementById('productEmpty').textContent = 'Failed to load — is the backend running?'; }
+        }
 
-document.getElementById('productForm').addEventListener('submit', async e=>{
-  e.preventDefault();
-  
-  let categoryId = document.getElementById('p-category').value;
-  if (!categoryId) {
-      alert("⚠️ Please create a category from the 'Categories' tab first!");
-      return;
-  }
-  
-  if(/^\d+$/.test(categoryId)) { categoryId = parseInt(categoryId); }
+        document.getElementById('productForm').addEventListener('submit', async e => {
+            e.preventDefault();
 
-  const body = {
-    name: document.getElementById('p-name').value,
-    price: parseFloat(document.getElementById('p-price').value),
-    description: document.getElementById('p-desc').value || 'No description',
-    categoryId: categoryId
-  };
-  
-  try {
-      const res = await fetch(API+'/products',{method:'POST', headers:authHeaders(), body:JSON.stringify(body)});
-      const result = await res.json();
-      if(res.ok || result.success){ 
-          e.target.reset(); loadProducts(); 
-          alert('Product successfully added!'); 
-      } else {
-          alert('Could not add product! Check backend console.');
-      }
-  } catch(err) { alert('Network Error!'); }
-});
+            let categoryId = document.getElementById('p-category').value;
+            if (!categoryId) {
+                alert("⚠️ Please create a category from the 'Categories' tab first!");
+                return;
+            }
 
-// ---- CATEGORIES ----
-async function loadCategories(){
-  try{
-    const res = await fetch(API+'/categories');
-    const json = await res.json();
-    const list = json.data || json || [];
-    document.getElementById('cnt-categories').textContent = list.length;
-    const rows = document.getElementById('categoryRows');
-    const empty = document.getElementById('categoryEmpty');
-    rows.innerHTML=''; empty.style.display = list.length ? 'none' : 'block';
-    
-    const select = document.getElementById('p-category');
-    if(list.length === 0) {
-        select.innerHTML = '<option value="" disabled selected>No Categories (Create one</option>';
-    } else {
-        select.innerHTML = '<option value="" disabled selected>Select Category...</option>';
-        list.forEach(c=>{
-          rows.innerHTML += `<tr><td>${c.name}</td><td class="id">${c.id}</td>
-            <td><button class="btn-danger" onclick="deleteItem('categories','${c.id}',loadCategories)">Delete</button></td></tr>`;
-          select.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+            if (/^\d+$/.test(categoryId)) { categoryId = parseInt(categoryId); }
+
+            const body = {
+                name: document.getElementById('p-name').value,
+                price: parseFloat(document.getElementById('p-price').value),
+                description: document.getElementById('p-desc').value || 'No description',
+                categoryId: categoryId
+            };
+
+            try {
+                const res = await fetch(API + '/products', { method: 'POST', headers: authHeaders(), body: JSON.stringify(body) });
+                const result = await res.json();
+                if (res.ok || result.success) {
+                    e.target.reset(); loadProducts();
+                    alert('Product successfully added!');
+                } else {
+                    alert('Could not add product! Check backend console.');
+                }
+            } catch (err) { alert('Network Error!'); }
         });
-    }
-  }catch(e){ document.getElementById('categoryEmpty').style.display='block'; document.getElementById('categoryEmpty').textContent='Failed to load.'; }
-}
 
-document.getElementById('categoryForm').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const body = { name: document.getElementById('c-name').value };
-  const res = await fetch(API+'/categories',{method:'POST', headers:authHeaders(), body:JSON.stringify(body)});
-  if(res.ok){ e.target.reset(); loadCategories(); alert('Category added!'); } else alert('Could not add category.');
-});
+        // ---- CATEGORIES ----
+        async function loadCategories() {
+            try {
+                const res = await fetch(API + '/categories');
+                const json = await res.json();
+                const list = json.data || json || [];
+                document.getElementById('cnt-categories').textContent = list.length;
+                const rows = document.getElementById('categoryRows');
+                const empty = document.getElementById('categoryEmpty');
+                rows.innerHTML = ''; empty.style.display = list.length ? 'none' : 'block';
 
-// ---- REVIEWS ----
-async function loadReviews(){
-  try{
-    const res = await fetch(API+'/reviews');
-    const json = await res.json();
-    const list = json.data || json || [];
-    document.getElementById('cnt-reviews').textContent = list.length;
-    const rows = document.getElementById('reviewRows');
-    const empty = document.getElementById('reviewEmpty');
-    rows.innerHTML=''; empty.style.display = list.length ? 'none' : 'block';
-    list.forEach(r=>{
-      const stars = '★'.repeat(r.rating||0) + '☆'.repeat(5-(r.rating||0));
-      rows.innerHTML += `<tr>
+                const select = document.getElementById('p-category');
+                if (list.length === 0) {
+                    select.innerHTML = '<option value="" disabled selected>No Categories (Create one</option>';
+                } else {
+                    select.innerHTML = '<option value="" disabled selected>Select Category...</option>';
+                    list.forEach(c => {
+                        rows.innerHTML += `<tr><td>${c.name}</td><td class="id">${c.id}</td>
+            <td><button class="btn-danger" onclick="deleteItem('categories','${c.id}',loadCategories)">Delete</button></td></tr>`;
+                        select.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+                    });
+                }
+            } catch (e) { document.getElementById('categoryEmpty').style.display = 'block'; document.getElementById('categoryEmpty').textContent = 'Failed to load.'; }
+        }
+
+        document.getElementById('categoryForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const body = { name: document.getElementById('c-name').value };
+            const res = await fetch(API + '/categories', { method: 'POST', headers: authHeaders(), body: JSON.stringify(body) });
+            if (res.ok) { e.target.reset(); loadCategories(); alert('Category added!'); } else alert('Could not add category.');
+        });
+
+        // ---- REVIEWS ----
+        async function loadReviews() {
+            try {
+                const res = await fetch(API + '/reviews');
+                const json = await res.json();
+                const list = json.data || json || [];
+                document.getElementById('cnt-reviews').textContent = list.length;
+                const rows = document.getElementById('reviewRows');
+                const empty = document.getElementById('reviewEmpty');
+                rows.innerHTML = ''; empty.style.display = list.length ? 'none' : 'block';
+                list.forEach(r => {
+                    const stars = '★'.repeat(r.rating || 0) + '☆'.repeat(5 - (r.rating || 0));
+                    rows.innerHTML += `<tr>
         <td>${r.product?.name || r.productId || '—'}</td>
         <td class="stars">${stars}</td>
         <td>${r.comment || ''}</td>
         <td class="id">${r.id}</td>
         <td><button class="btn-danger" onclick="deleteItem('reviews','${r.id}',loadReviews)">Delete</button></td>
       </tr>`;
-    });
-  }catch(e){ document.getElementById('reviewEmpty').style.display='block'; document.getElementById('reviewEmpty').textContent='Failed to load.'; }
-}
+                });
+            } catch (e) { document.getElementById('reviewEmpty').style.display = 'block'; document.getElementById('reviewEmpty').textContent = 'Failed to load.'; }
+        }
 
-// ---- USERS ----
-async function loadUsers(){
-  try{
-    const res = await fetch(API+'/users', {headers:authHeaders(false)});
-    const json = await res.json();
-    const list = json.data || json || [];
-    document.getElementById('cnt-users').textContent = list.length;
-    const rows = document.getElementById('userRows');
-    const empty = document.getElementById('userEmpty');
-    rows.innerHTML=''; empty.style.display = list.length ? 'none' : 'block';
-    list.forEach(u=>{
-      rows.innerHTML += `<tr><td>${u.name || '—'}</td><td>${u.email}</td><td class="id">${u.id}</td>
+        // ---- USERS ----
+        async function loadUsers() {
+            try {
+                const res = await fetch(API + '/users', { headers: authHeaders(false) });
+                const json = await res.json();
+                const list = json.data || json || [];
+                document.getElementById('cnt-users').textContent = list.length;
+                const rows = document.getElementById('userRows');
+                const empty = document.getElementById('userEmpty');
+                rows.innerHTML = ''; empty.style.display = list.length ? 'none' : 'block';
+                list.forEach(u => {
+                    rows.innerHTML += `<tr><td>${u.name || '—'}</td><td>${u.email}</td><td class="id">${u.id}</td>
         <td><button class="btn-danger" onclick="deleteItem('users','${u.id}',loadUsers)">Delete</button></td></tr>`;
-    });
-  }catch(e){ document.getElementById('userEmpty').style.display='block'; document.getElementById('userEmpty').textContent='Failed to load — login may be required.'; }
-}
+                });
+            } catch (e) { document.getElementById('userEmpty').style.display = 'block'; document.getElementById('userEmpty').textContent = 'Failed to load — login may be required.'; }
+        }
 
-// ---- AUTH ----
-document.getElementById('loginForm').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const body = { email: document.getElementById('a-email').value, password: document.getElementById('a-password').value };
-  try{
-    const res = await fetch(API+'/auth/login',{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
-    const json = await res.json();
-    TOKEN = json.token || json.data?.token || '';
-    document.getElementById('tokenPill').textContent = TOKEN ? 'token set ✓' : 'login failed';
-    if(TOKEN) loadAll();
-  }catch(err){ document.getElementById('tokenPill').textContent = 'login error'; }
-});
+        // ---- AUTH ----
+        document.getElementById('loginForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const body = { email: document.getElementById('a-email').value, password: document.getElementById('a-password').value };
+            try {
+                const res = await fetch(API + '/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                const json = await res.json();
+                TOKEN = json.token || json.data?.token || '';
+                document.getElementById('tokenPill').textContent = TOKEN ? 'token set ✓' : 'login failed';
+                if (TOKEN) loadAll();
+            } catch (err) { document.getElementById('tokenPill').textContent = 'login error'; }
+        });
 
 
-// ---- shared delete ----
-async function deleteItem(resource, id, reload){
-  if(!confirm('Delete this ' + resource.slice(0,-1) + '?')) return;
-  const res = await fetch(`${API}/${resource}/${id}`, {method:'DELETE', headers:authHeaders(false)});
-  if(res.ok) reload(); else alert('Delete failed — you may need to log in first.');
-}
+        // ---- shared delete ----
+        async function deleteItem(resource, id, reload) {
+            if (!confirm('Delete this ' + resource.slice(0, -1) + '?')) return;
+            const res = await fetch(`${API}/${resource}/${id}`, { method: 'DELETE', headers: authHeaders(false) });
+            if (res.ok) reload(); else alert('Delete failed — you may need to log in first.');
+        }
 
-function loadAll(){ loadCategories().then(loadProducts); loadReviews(); loadUsers(); checkConn(); }
-loadAll();
-</script>
+        function loadAll() { loadCategories().then(loadProducts); loadReviews(); loadUsers(); checkConn(); }
+        loadAll();
+    </script>
 </body>
+
 </html>
