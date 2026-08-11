@@ -9,7 +9,7 @@ const connectionString = process.env.DATABASE_URL;
 const pool = new pg.Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 // Pass the adapter to PrismaClient
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 const PORT = process.env.PORT || 5000;
 async function bootstrap() {
     try {
