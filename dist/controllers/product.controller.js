@@ -43,7 +43,7 @@ export const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
         const product = await prisma.product.findUnique({
-            where: { id, isDeleted: false },
+            where: { id: String(id), isDeleted: false },
             include: { category: true, reviews: true } // ক্যাটাগরি এবং রিভিউ সহ দেখাবে
         });
         if (!product) {
@@ -66,7 +66,7 @@ export const updateProduct = async (req, res) => {
         const { id } = req.params;
         const data = req.body;
         const updatedProduct = await prisma.product.update({
-            where: { id },
+            where: { id: String(id) },
             data
         });
         res.status(200).json({
@@ -85,7 +85,7 @@ export const deleteProduct = async (req, res) => {
         const { id } = req.params;
         // Soft Delete: ডাটাবেস থেকে একেবারে না মুছে শুধু isDeleted কে true করে দেওয়া
         await prisma.product.update({
-            where: { id },
+            where: { id: String(id) },
             data: { isDeleted: true }
         });
         res.status(200).json({
