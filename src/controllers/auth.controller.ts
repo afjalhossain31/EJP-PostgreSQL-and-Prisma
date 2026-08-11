@@ -1,14 +1,9 @@
 import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import pg from 'pg';
 import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
 
 // Database & Prisma Setup
-const connectionString = process.env.DATABASE_URL;
-const pool = new pg.Pool({ connectionString });
-const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_super_secret_key';
