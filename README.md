@@ -226,16 +226,16 @@ Method Endpoint
 
 ---
 
-GET /api/v1/users
-POST /api/v1/users
-GET /api/v1/users/:id
-PATCH /api/v1/users/:id
-DELETE /api/v1/users/:id
-GET /api/v1/products
-POST /api/v1/products
-GET /api/v1/products/:id
-PATCH /api/v1/products/:id
-DELETE /api/v1/products/:id
+GET /api/v1/users  
+POST /api/v1/users   
+GET /api/v1/users/:id   
+PATCH /api/v1/users/:id   
+DELETE /api/v1/users/:id  
+GET /api/v1/products   
+POST /api/v1/products  
+GET /api/v1/products/:id   
+PATCH /api/v1/products/:id   
+DELETE /api/v1/products/:id    
 
 ## 16. Deployment
 
